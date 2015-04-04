@@ -99,7 +99,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void) setCurrentContext;
 @property (NS_NONATOMIC_IOSONLY, getter=isCurrentContext, readonly) BOOL currentContext;
 - (void) clearCurrentContext;
-@property (NS_NONATOMIC_IOSONLY, getter=getCurrentContext, readonly, strong) EAGLContext *currentContext;
+//@property (NS_NONATOMIC_IOSONLY, getter=getCurrentContext, readonly, strong) EAGLContext *currentContext;
 
 - (void) swapBuffers; //This also checks the current OpenGL error and logs an error if needed
 
