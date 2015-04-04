@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'FingerPaintAnimals' target in the 'FingerPaintAnimals' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif
