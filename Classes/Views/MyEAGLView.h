@@ -84,7 +84,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	BOOL					_hasBeenCurrent;
 	id<MyEAGLViewDelegate>	_delegate;
 }
-- (id)initWithCoder:(NSCoder*)coder; 
+- (instancetype)initWithCoder:(NSCoder*)coder NS_DESIGNATED_INITIALIZER; 
 
 @property(readonly) GLuint framebuffer;
 @property(readonly) NSString* pixelFormat;
@@ -97,9 +97,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @property(assign) id<MyEAGLViewDelegate> delegate;
 
 - (void) setCurrentContext;
-- (BOOL) isCurrentContext;
+@property (NS_NONATOMIC_IOSONLY, getter=isCurrentContext, readonly) BOOL currentContext;
 - (void) clearCurrentContext;
-- (EAGLContext*) getCurrentContext;
+@property (NS_NONATOMIC_IOSONLY, getter=getCurrentContext, readonly, strong) EAGLContext *currentContext;
 
 - (void) swapBuffers; //This also checks the current OpenGL error and logs an error if needed
 

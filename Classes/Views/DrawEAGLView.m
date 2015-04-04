@@ -5,7 +5,7 @@
 
 @interface DrawEAGLView (private)
 
-- (BOOL) createSurface;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL createSurface;
 - (void) destroySurface;
 
 @end
@@ -18,18 +18,15 @@
 	return [CAEAGLLayer class];
 }
 
--(id)initWithFrame:(CGRect)frame {
+-(instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if(self != nil) {
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer*)[self layer];
 		
 		eaglLayer.opaque = YES;
 		
-		[eaglLayer setDrawableProperties:[NSDictionary dictionaryWithObjectsAndKeys:
-										  [NSNumber numberWithBool:YES],
-										  kEAGLDrawablePropertyRetainedBacking,
-										  kEAGLColorFormatRGBA8,
-										  kEAGLDrawablePropertyColorFormat, nil]];
+		[eaglLayer setDrawableProperties:@{kEAGLDrawablePropertyRetainedBacking: @YES,
+										  kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8}];
 		
 		
 		_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
@@ -45,17 +42,14 @@
 }
 
 //The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
-- (id)initWithCoder:(NSCoder*)coder {
+- (instancetype)initWithCoder:(NSCoder*)coder {
 	if ((self = [super initWithCoder:coder])) {
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer*)[self layer];
 		
 		eaglLayer.opaque = YES;
 		
-		[eaglLayer setDrawableProperties:[NSDictionary dictionaryWithObjectsAndKeys:
-										  [NSNumber numberWithBool:YES],
-										  kEAGLDrawablePropertyRetainedBacking,
-										  kEAGLColorFormatRGBA8,
-										  kEAGLDrawablePropertyColorFormat, nil]];
+		[eaglLayer setDrawableProperties:@{kEAGLDrawablePropertyRetainedBacking: @YES,
+										  kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8}];
 		
 		_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
 		

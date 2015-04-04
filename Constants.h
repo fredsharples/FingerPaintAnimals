@@ -10,12 +10,12 @@
 #import <mach/mach_time.h>
 #import "Texture2D.h"
 
-typedef enum {
+typedef NS_ENUM(NSInteger, GameState) {
 	kGameState_StandBy = 0,
 	kGameState_Legal,
 	kGameState_Title,
 	kGameState_Game
-} GameState;
+} ;
 
 #define DEGREES_TO_RADIANS(_ANGLE_) (_ANGLE_ / 180.0 * M_PI)
 

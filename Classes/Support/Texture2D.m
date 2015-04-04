@@ -60,7 +60,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @synthesize contentSize=_size, pixelFormat=_format, pixelsWide=_width, pixelsHigh=_height, name=_name, maxS=_maxS, maxT=_maxT;
 
-- (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size
+- (instancetype) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size
 {
 	GLint					saveName;
 	if((self = [super init])) {
@@ -112,7 +112,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @implementation Texture2D (Image)
 	
-- (id) initWithImage:(UIImage *)uiImage
+- (instancetype) initWithImage:(UIImage *)uiImage
 {
 	NSUInteger				width,
 							height,
@@ -233,7 +233,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @implementation Texture2D (Text)
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
+- (instancetype) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	NSUInteger				width,
 							height,

@@ -49,7 +49,7 @@
 
 @implementation QuartzView
 
--(id)initWithFrame:(CGRect)frame {
+-(instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if(self != nil) {
 		self.backgroundColor = [UIColor clearColor];

@@ -82,8 +82,8 @@
 
 - (void) playSoundIdentifier;
 
-- (unsigned) levelNum;
-- (void) setLevelNum:(unsigned)newLevelNum;
+@property (NS_NONATOMIC_IOSONLY) unsigned int levelNum;
+
 
 - (void) invalidateTimer;
 

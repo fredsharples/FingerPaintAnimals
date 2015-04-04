@@ -134,12 +134,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		[EAGLContext setCurrentContext:oldContext];
 }
 
--(id)initWithFrame:(CGRect)frame {
+-(instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if(self != nil) {
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer*)[self layer];
 		
-		[eaglLayer setDrawableProperties:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil]];
+		[eaglLayer setDrawableProperties:@{kEAGLDrawablePropertyRetainedBacking: @NO, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8}];
 		_format = kEAGLColorFormatRGBA8;
 		_depthFormat = 0;
 		
@@ -158,12 +158,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 }
 
 //The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
-- (id)initWithCoder:(NSCoder*)coder {
+- (instancetype)initWithCoder:(NSCoder*)coder {
 	
 	if ((self = [super initWithCoder:coder])) {
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer*)[self layer];
 		
-		[eaglLayer setDrawableProperties:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil]];
+		[eaglLayer setDrawableProperties:@{kEAGLDrawablePropertyRetainedBacking: @NO, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8}];
 		_format = kEAGLColorFormatRGBA8;
 		_depthFormat = 0;
 		

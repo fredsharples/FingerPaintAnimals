@@ -109,8 +109,7 @@
 										  nil];
 	} else {
 */
-		_saveAnimation.animationImages = [NSArray arrayWithObjects:
-										  [UIImage imageNamed:@"camera_00_iPad.png"],
+		_saveAnimation.animationImages = @[[UIImage imageNamed:@"camera_00_iPad.png"],
 										  [UIImage imageNamed:@"camera_01_iPad.png"],
 										  [UIImage imageNamed:@"camera_02_iPad.png"],
 										  [UIImage imageNamed:@"camera_03_iPad.png"],
@@ -124,8 +123,7 @@
 										  [UIImage imageNamed:@"camera_03_iPad.png"],
 										  [UIImage imageNamed:@"camera_02_iPad.png"],
 										  [UIImage imageNamed:@"camera_01_iPad.png"],
-										  [UIImage imageNamed:@"camera_00_iPad.png"],
-										  nil];
+										  [UIImage imageNamed:@"camera_00_iPad.png"]];
 //	}
 	
 	_saveAnimation.animationDuration = 1.0;
@@ -145,15 +143,13 @@
 										   nil];
 	} else {
 */
-		_clearAnimation.animationImages = [NSArray arrayWithObjects:
-										   [UIImage imageNamed:@"garbage_00_iPad.png"],
+		_clearAnimation.animationImages = @[[UIImage imageNamed:@"garbage_00_iPad.png"],
 										   [UIImage imageNamed:@"garbage_01_iPad.png"],
 										   [UIImage imageNamed:@"garbage_02_iPad.png"],
 										   [UIImage imageNamed:@"garbage_03_iPad.png"],
 										   [UIImage imageNamed:@"garbage_04_iPad.png"],
 										   [UIImage imageNamed:@"garbage_05_iPad.png"],
-										   [UIImage imageNamed:@"garbage_00_iPad.png"],
-										   nil];
+										   [UIImage imageNamed:@"garbage_00_iPad.png"]];
 //	}
 	_clearAnimation.animationDuration = 0.5;
 	_clearAnimation.animationRepeatCount = 1;
@@ -316,10 +312,8 @@
 - (void) startAnimationSequence {
 	[_soundIdentifier setString:[NSString stringWithFormat:@"SFX_%@", _type]];
 	
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							   _soundIdentifier, kNotificationSoundIdentifier,
-							   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-							   nil];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: _soundIdentifier,
+							   kNotificationSoundRestart: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 	
 	[self startAnimationTimer];
@@ -348,7 +342,7 @@
 }
 
 - (void) checkSoundPlaying {
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObject:_soundIdentifier forKey:kNotificationSoundIdentifier];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: _soundIdentifier};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kQuerySoundNotification object:self userInfo:soundInfo];
 }
 
@@ -356,7 +350,7 @@
 	[self invalidateTimer];
 	
 	NSDictionary *userInfo = [notificationObject userInfo];
-	BOOL soundPlaying = [[userInfo objectForKey:kNotificationSoundPlaying] boolValue];
+	BOOL soundPlaying = [userInfo[kNotificationSoundPlaying] boolValue];
 
 //	if (_shaking) {
 		if (soundPlaying) {
@@ -388,7 +382,7 @@
 		_currentAnimation = 1;
 	}
 	
-	NSString *imageName = [NSString stringWithFormat:@"screen_%@_drawing_0%d", _type, [[_levelData objectAtIndex:_currentAnimation] intValue]];
+	NSString *imageName = [NSString stringWithFormat:@"screen_%@_drawing_0%d", _type, [_levelData[_currentAnimation] intValue]];
 
 	_gameDrawView._imageFileName = imageName;
 		
@@ -405,21 +399,19 @@
 	
 	[self initializeViewAnimation];
 	
-	NSDictionary *soundLoopInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   @"MUSIC_intro", kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundLoop,
-								   nil];
+	NSDictionary *soundLoopInfo = @{kNotificationSoundIdentifier: @"MUSIC_intro",
+								   kNotificationSoundLoop: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSetSoundLoopNotification object:self userInfo:soundLoopInfo];
 	
 	
-	NSDictionary *fadeSoundInfo = [NSDictionary dictionaryWithObject:@"MUSIC_intro" forKey:kNotificationSoundIdentifier];
+	NSDictionary *fadeSoundInfo = @{kNotificationSoundIdentifier: @"MUSIC_intro"};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kFadeSoundInNotification object:self userInfo:fadeSoundInfo];
 }
 
 - (void) updateImage:(unsigned)forward {
 	[self invalidateTimer];
 	if ([_soundIdentifier length] > 0) {
-		NSDictionary *soundInfo = [NSDictionary dictionaryWithObject:_soundIdentifier forKey:kNotificationSoundIdentifier];
+		NSDictionary *soundInfo = @{kNotificationSoundIdentifier: _soundIdentifier};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kStopSoundNotification object:self userInfo:soundInfo];
 	}
 	
@@ -433,7 +425,7 @@
 	NSData *_imageData = [_gameDrawView convertImageToData];
 	if (_drawn) {
 		// point to the datatable for the level
-		NSMutableArray *animationData = (NSMutableArray*)[_animationDataTable objectAtIndex:_levelNum];
+		NSMutableArray *animationData = (NSMutableArray*)_animationDataTable[_levelNum];
 	
 		[animationData removeAllObjects];
 	
@@ -442,10 +434,10 @@
 }
 
 - (void) createSavedPreviewImageData {
-	NSMutableArray *animationData = (NSMutableArray*)[_animationDataTable objectAtIndex:_levelNum];
+	NSMutableArray *animationData = (NSMutableArray*)_animationDataTable[_levelNum];
 	
 	if ([animationData count] > 0) {
-		[_gameDrawView createSavedPreviewImageData:[animationData objectAtIndex:0]];
+		[_gameDrawView createSavedPreviewImageData:animationData[0]];
 		_hidePaperForTransition = NO;
 	} else {
 		[_gameDrawView createClearPreviewImageData];
@@ -459,10 +451,10 @@
 	
 	[_gameDrawView clearDrawnPoints];
 	
-	NSMutableArray *animationData = (NSMutableArray*)[_animationDataTable objectAtIndex:_levelNum];
+	NSMutableArray *animationData = (NSMutableArray*)_animationDataTable[_levelNum];
 	
 	if ([animationData count] > 0) {
-		[_gameDrawView drawSavedImageData:[animationData objectAtIndex:0]];
+		[_gameDrawView drawSavedImageData:animationData[0]];
 	}
 }
 
@@ -476,26 +468,20 @@
 		[_soundIdentifier setString:[NSString stringWithFormat:@"VO_%@", _type]];	
 	}
 	
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							   _soundIdentifier, kNotificationSoundIdentifier,
-							   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-							   nil];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: _soundIdentifier,
+							   kNotificationSoundRestart: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 }
 
 - (void) playLevelSound {
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							   kNewLevelAudio, kNotificationSoundIdentifier,
-							   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-							   nil];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kNewLevelAudio,
+							   kNotificationSoundRestart: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 }
 
 - (void) playScreenSound {
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							   kNewScreenAudio, kNotificationSoundIdentifier,
-							   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-							   nil];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kNewScreenAudio,
+							   kNotificationSoundRestart: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 }
 
@@ -517,7 +503,7 @@
 	if (!_animating && ![_eraseConfirmView superview]) {
 		for (i = 0; i < [touches count]; i++) {
 			//UITouch *touch = [touches anyObject];
-			UITouch *touch = [[touches allObjects] objectAtIndex:i];
+			UITouch *touch = [touches allObjects][i];
 			CGPoint location = [touch locationInView:self.view];
 			location = CGPointMake(location.x, self.view.bounds.size.height - location.y);
 			CGPoint prevLocation = [touch previousLocationInView:self.view];
@@ -535,7 +521,7 @@
 	if (!_animating) {
 		for (i = 0; i < [touches count]; i++) {
 			//UITouch *touch = [touches anyObject];
-			UITouch *touch = [[touches allObjects] objectAtIndex:i];
+			UITouch *touch = [touches allObjects][i];
 			NSUInteger numTaps = [touch tapCount];
 			
 			if (numTaps < 2) {
@@ -556,11 +542,9 @@
 	if (buttonTouched == sender) {
 		self.view.userInteractionEnabled = NO;
 		
-		NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kClickAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-								   nil];
+		NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kClickAudio,
+								   kNotificationSoundRestart: @YES,
+								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 		
 		[self updateImage:YES];
@@ -571,11 +555,9 @@
 	if (buttonTouched == sender) {
 		self.view.userInteractionEnabled = NO;
 		
-		NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kClickAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-								   nil];
+		NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kClickAudio,
+								   kNotificationSoundRestart: @YES,
+								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 		
 		[self updateImage:NO];
@@ -586,19 +568,15 @@
 	if (buttonTouched == sender) {
 		self.view.userInteractionEnabled = NO;
 		
-		NSDictionary *soundInfo0 = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kClickAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-								   nil];
+		NSDictionary *soundInfo0 = @{kNotificationSoundIdentifier: kClickAudio,
+								   kNotificationSoundRestart: @YES,
+								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo0];
 		
 		[_soundIdentifier setString:[NSString stringWithString:kCameraAudio]];
 
-		NSDictionary *soundInfo1 = [NSDictionary dictionaryWithObjectsAndKeys:
-								   _soundIdentifier, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   nil];
+		NSDictionary *soundInfo1 = @{kNotificationSoundIdentifier: _soundIdentifier,
+								   kNotificationSoundRestart: @YES};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo1];
 		
 		_saveButton.hidden = YES;
@@ -623,19 +601,15 @@
 		[_gameDrawView changeLineColorR:_currentColorButton._r G:_currentColorButton._g B:_currentColorButton._b];
 	
 		if (_initialized) {
-			NSDictionary *soundInfo0 = [NSDictionary dictionaryWithObjectsAndKeys:
-									   kClickAudio, kNotificationSoundIdentifier,
-									   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-									   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-									   nil];
+			NSDictionary *soundInfo0 = @{kNotificationSoundIdentifier: kClickAudio,
+									   kNotificationSoundRestart: @YES,
+									   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 			[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo0];
 			
 			[_soundIdentifier setString:[NSString stringWithString:_currentColorButton._vo]];
 			
-			NSDictionary *soundInfo1 = [NSDictionary dictionaryWithObjectsAndKeys:
-									   _soundIdentifier, kNotificationSoundIdentifier,
-									   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-									   nil];
+			NSDictionary *soundInfo1 = @{kNotificationSoundIdentifier: _soundIdentifier,
+									   kNotificationSoundRestart: @YES};
 			[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo1];
 		}
 	}
@@ -643,11 +617,9 @@
 
 - (IBAction) clearImageSelected:(id)sender {
 	if (buttonTouched == sender) {
-		NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kClickAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-								   nil];
+		NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kClickAudio,
+								   kNotificationSoundRestart: @YES,
+								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 		
 		[self.view addSubview:_eraseConfirmView];
@@ -660,22 +632,18 @@
 		
 		[self removeEraseConfirm];
 	
-		NSDictionary *soundInfo0 = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kClickAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-								   nil];
+		NSDictionary *soundInfo0 = @{kNotificationSoundIdentifier: kClickAudio,
+								   kNotificationSoundRestart: @YES,
+								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo0];
 		
 		[_soundIdentifier setString:[NSString stringWithString:kTrashAudio]];
 
-		NSDictionary *soundInfo1 = [NSDictionary dictionaryWithObjectsAndKeys:
-								   _soundIdentifier, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   nil];
+		NSDictionary *soundInfo1 = @{kNotificationSoundIdentifier: _soundIdentifier,
+								   kNotificationSoundRestart: @YES};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo1];
 	
-		NSMutableArray *animationData = (NSMutableArray*)[_animationDataTable objectAtIndex:_levelNum];
+		NSMutableArray *animationData = (NSMutableArray*)_animationDataTable[_levelNum];
 		[animationData removeAllObjects];
 		
 		_clearButton.hidden = YES;
@@ -692,11 +660,9 @@
 
 - (IBAction) clearImageDenied:(id)sender {
 	if (buttonTouched == sender) {
-		NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kClickAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   [NSNumber numberWithFloat:kClickVolume], kNotificationSoundVolume,
-								   nil];
+		NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kClickAudio,
+								   kNotificationSoundRestart: @YES,
+								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 		
 		[self removeEraseConfirm];
@@ -733,12 +699,12 @@
 	_currentAnimation = 1;
 	
 	_levelNum = newLevelNum;
-	_levelData = [_levels objectAtIndex:_levelNum];
+	_levelData = _levels[_levelNum];
 	
 	_drawn = NO;
 	
 	[_type release];
-	_type = [[NSString alloc] initWithString:[_levelData objectAtIndex:0]];
+	_type = [[NSString alloc] initWithString:_levelData[0]];
 }
 
 - (NSArray*) _levels {
@@ -758,7 +724,7 @@
 	_animationDataTable = [[NSMutableArray alloc] init];
 	for (i = 0; i < [newAnimationDataTable count]; i++) {
 		animationData = [[NSMutableArray alloc] init];
-		[animationData addObjectsFromArray:[newAnimationDataTable objectAtIndex:i]];
+		[animationData addObjectsFromArray:newAnimationDataTable[i]];
 		[_animationDataTable addObject:animationData];
 		[animationData release];
 	}

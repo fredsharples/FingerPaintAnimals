@@ -52,7 +52,7 @@
 
 - (void) setSoundLoop:(NSString*)identifier loop:(BOOL)loop;
 - (BOOL) soundPlaying:(NSString*)identifier;
-- (BOOL) soundPlaying;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL soundPlaying;
 - (void) stopAllSoundsExcept:(NSString*)identifier;
 - (void) restartSounds;
 - (BOOL) playSound:(NSString*)identifier restart:(BOOL)restart atVolume:(float)volume;

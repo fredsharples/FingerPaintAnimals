@@ -13,14 +13,14 @@
 
 @synthesize _showSpeckles;
 
-- (id)initWithCoder:(NSCoder*)coder {
+- (instancetype)initWithCoder:(NSCoder*)coder {
 	if ((self = [super initWithCoder:coder])) {
 		[self initializeMe];
 	}
 	return self;
 }
 
--(id)initWithFrame:(CGRect)frame {
+-(instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if(self != nil) {
 		[self initializeMe];

@@ -132,7 +132,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:_saveData forKey:kGameDataKey];
 	_saveData = [[[NSUserDefaults standardUserDefaults] objectForKey:kGameDataKey] mutableCopy];
 	
-	NSDictionary *savedLocationDict = [NSDictionary dictionaryWithObject:_saveData forKey:kGameDataKey];
+	NSDictionary *savedLocationDict = @{kGameDataKey: _saveData};
 	[[NSUserDefaults standardUserDefaults] registerDefaults:savedLocationDict];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
@@ -144,7 +144,7 @@
 
 - (void) changeStateNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	unsigned newState = [[userInfo objectForKey:kNotificationKey] unsignedIntValue];
+	unsigned newState = [userInfo[kNotificationKey] unsignedIntValue];
 	[self changeState:newState];
 }
 

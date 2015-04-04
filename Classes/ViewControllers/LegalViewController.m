@@ -93,7 +93,7 @@
 }
 
 - (void) removeView {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:kGameState_Title] forKey:kNotificationKey];
+	NSDictionary *userInfo = @{kNotificationKey: [NSNumber numberWithUnsignedInt:kGameState_Title]};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kChangeStateNotification object:self userInfo:userInfo];
 }
 

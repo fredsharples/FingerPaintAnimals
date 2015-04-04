@@ -72,10 +72,8 @@
 - (void) viewVisible {
 	self.view.userInteractionEnabled = YES;
 
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   kTitleAudio, kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundRestart,
-								   nil];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kTitleAudio,
+								   kNotificationSoundRestart: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo];
 	
 	[self startAnimationTimer];
@@ -84,17 +82,17 @@
 
 // A tap starts game play
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObject:kTitleAudio forKey:kNotificationSoundIdentifier];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: kTitleAudio};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kStopSoundNotification object:self userInfo:soundInfo];
 	
-	NSDictionary *fadeSoundInfo = [NSDictionary dictionaryWithObject:@"MUSIC_intro" forKey:kNotificationSoundIdentifier];
+	NSDictionary *fadeSoundInfo = @{kNotificationSoundIdentifier: @"MUSIC_intro"};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kFadeSoundOutNotification object:self userInfo:fadeSoundInfo];
 	
 	[self fadeView];
 }
 
 - (void) removeView {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:kGameState_Game] forKey:kNotificationKey];
+	NSDictionary *userInfo = @{kNotificationKey: [NSNumber numberWithUnsignedInt:kGameState_Game]};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kChangeStateNotification object:self userInfo:userInfo];
 }
 
@@ -136,7 +134,7 @@
 		_currentAnimation = 1;
 	}
 	
-	NSString *imageName = [NSString stringWithFormat:@"screen_%@_0%d", _type, [[_levelData objectAtIndex:_currentAnimation] intValue]];
+	NSString *imageName = [NSString stringWithFormat:@"screen_%@_0%d", _type, [_levelData[_currentAnimation] intValue]];
 	
 	_gameImageEAGLView0._imageFileName = imageName;
 	[self startAnimationTimer];
@@ -148,18 +146,16 @@
 	_animationStarted = NO;
 	_currentAnimation = 1;
 
-	_type = [[NSString alloc] initWithString:[_levelData objectAtIndex:0]];
+	_type = [[NSString alloc] initWithString:_levelData[0]];
 		
 	[self initializeViewAnimation];
 	
-	NSDictionary *soundLoopInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   @"MUSIC_intro", kNotificationSoundIdentifier,
-								   [NSNumber numberWithBool:YES], kNotificationSoundLoop,
-								   nil];
+	NSDictionary *soundLoopInfo = @{kNotificationSoundIdentifier: @"MUSIC_intro",
+								   kNotificationSoundLoop: @YES};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSetSoundLoopNotification object:self userInfo:soundLoopInfo];
 
 	
-	NSDictionary *fadeSoundInInfo = [NSDictionary dictionaryWithObject:@"MUSIC_intro" forKey:kNotificationSoundIdentifier];
+	NSDictionary *fadeSoundInInfo = @{kNotificationSoundIdentifier: @"MUSIC_intro"};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kFadeSoundInNotification object:self userInfo:fadeSoundInInfo];
 }
 

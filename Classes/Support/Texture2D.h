@@ -50,12 +50,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 //CONSTANTS:
 
-typedef enum {
+typedef NS_ENUM(NSInteger, Texture2DPixelFormat) {
 	kTexture2DPixelFormat_Automatic = 0,
 	kTexture2DPixelFormat_RGBA8888,
 	kTexture2DPixelFormat_RGB565,
 	kTexture2DPixelFormat_A8,
-} Texture2DPixelFormat;
+} ;
 
 #define kBrushPixelStep 15	// user to be 8
 #define kBrushScale		1	// used to be 2
@@ -79,7 +79,7 @@ Be aware that the content of the generated textures will be upside-down!
 	GLfloat						_maxS,
 								_maxT;
 }
-- (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
+- (instancetype) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size NS_DESIGNATED_INITIALIZER;
 
 @property(readonly) Texture2DPixelFormat pixelFormat;
 @property(readonly) NSUInteger pixelsWide;
@@ -109,7 +109,7 @@ Extensions to make it easy to create a Texture2D object from an image file.
 Note that RGBA type textures will have their alpha premultiplied - use the blending mode (GL_ONE, GL_ONE_MINUS_SRC_ALPHA).
 */
 @interface Texture2D (Image)
-- (id) initWithImage:(UIImage *)uiImage;
+- (instancetype) initWithImage:(UIImage *)uiImage;
 @end
 
 /*
@@ -117,5 +117,5 @@ Extensions to make it easy to create a Texture2D object from a string of text.
 Note that the generated textures are of type A8 - use the blending mode (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).
 */
 @interface Texture2D (Text)
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
+- (instancetype) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
 @end

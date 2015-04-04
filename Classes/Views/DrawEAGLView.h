@@ -39,14 +39,14 @@ void releaseDataCallback (
 	int _viewHeight;
 }
 
-- (id)initWithCoder:(NSCoder*)coder; 
+- (instancetype)initWithCoder:(NSCoder*)coder NS_DESIGNATED_INITIALIZER; 
 
 - (void) initializeView;
 - (void) changeLineColorR:(float)r G:(float)g B:(float)b;
 - (void) clearDrawnPoints;
 - (void) drawFromPoint:(CGPoint)start toPoint:(CGPoint)end;
 
-- (NSData*) convertImageToData;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSData *convertImageToData;
 - (void) drawSavedImageData:(NSData*)imageData;
 - (void) createSavedPreviewImageData:(NSData*)imageData;
 - (void) createClearPreviewImageData;

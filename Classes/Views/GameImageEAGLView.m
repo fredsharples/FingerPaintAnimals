@@ -4,7 +4,7 @@
 
 @synthesize _showSpeckles;
 
--(id)initWithFrame:(CGRect)frame {
+-(instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if(self != nil) {
 		[self initializeView];
@@ -13,7 +13,7 @@
 }
 
 //The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
-- (id)initWithCoder:(NSCoder*)coder {
+- (instancetype)initWithCoder:(NSCoder*)coder {
 	if ((self = [super initWithCoder:coder])) {
 		[self initializeView];
 	}

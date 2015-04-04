@@ -3,13 +3,13 @@
 #import "Constants.h"
 
 @interface Sound(Private)
-- (id) initSoundWithIdentifier:(NSString*)identifier;
+- (instancetype) initSoundWithIdentifier:(NSString*)identifier;
 @end
 
 @implementation Sound
 @synthesize _sourceID, _bufferID, _identifier, _playing, _volume, _volumeState;
 
-- (id) initSoundWithIdentifier:(NSString*)identifier {
+- (instancetype) initSoundWithIdentifier:(NSString*)identifier {
 	if ((self = [super init])) {
 		_identifier = [[NSString alloc] initWithString:identifier];
 		alGenBuffers(1, &_bufferID); 
@@ -115,7 +115,7 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 }
 */
 
-- (id) init {	
+- (instancetype) init {	
 	if (self = [super init]) {
 		// Put the listener in the center of the stage
 		_listenerPos = CGPointMake(0.0, 0.0);
@@ -170,7 +170,7 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 #pragma mark OpenAL
 
 - (BOOL) isSoundInitialized:(NSString*)name  {
-	NSString* filename = [_sounds objectForKey:name];
+	NSString* filename = _sounds[name];
 	return (filename && [filename isKindOfClass:[Sound class]]);
 }
 
@@ -181,7 +181,7 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 	initialized = [self isSoundInitialized:identifier];
 	
 	if (!initialized) {
-		filename = [_sounds objectForKey:identifier];
+		filename = _sounds[identifier];
 		if ([filename isKindOfClass:[NSString class]]) {
 			if (![[NSBundle mainBundle] pathForResource:filename ofType:@"caf"]) {
 				NSLog (@"ERROR: Could not load file %@", filename);
@@ -192,13 +192,13 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 				[sound release];
 				return NULL;
 			} else {
-				[_sounds setObject:sound forKey:identifier];
+				_sounds[identifier] = sound;
 				[sound release];
 			}
 		}
 	}
 	
-	sound = [_sounds objectForKey:identifier];
+	sound = _sounds[identifier];
 	return sound;
 }
 
@@ -487,20 +487,20 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 
 - (void) setSoundLoopNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	NSString *identifier = [userInfo objectForKey:kNotificationSoundIdentifier];
-	BOOL loop = [[userInfo objectForKey:kNotificationSoundLoop] boolValue];
+	NSString *identifier = userInfo[kNotificationSoundIdentifier];
+	BOOL loop = [userInfo[kNotificationSoundLoop] boolValue];
 	
 	[self setSoundLoop:identifier loop:loop];
 }
 
 - (void) playSoundNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	NSString *identifier = [userInfo objectForKey:kNotificationSoundIdentifier];
-	BOOL restart = [[userInfo objectForKey:kNotificationSoundRestart] boolValue];
+	NSString *identifier = userInfo[kNotificationSoundIdentifier];
+	BOOL restart = [userInfo[kNotificationSoundRestart] boolValue];
 	float volume;
 	
-	if ([userInfo objectForKey:kNotificationSoundVolume]) {
-		volume = [[userInfo objectForKey:kNotificationSoundVolume] floatValue];
+	if (userInfo[kNotificationSoundVolume]) {
+		volume = [userInfo[kNotificationSoundVolume] floatValue];
 		[self playSound:identifier restart:restart atVolume:volume];
 	} else {
 		[self playSound:identifier restart:restart];
@@ -509,35 +509,33 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 
 - (void) fadeSoundInNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	NSString *identifier = [userInfo objectForKey:kNotificationSoundIdentifier];
+	NSString *identifier = userInfo[kNotificationSoundIdentifier];
 
 	[self fadeSoundIn:identifier];
 }
 
 - (void) fadeSoundOutNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	NSString *identifier = [userInfo objectForKey:kNotificationSoundIdentifier];
+	NSString *identifier = userInfo[kNotificationSoundIdentifier];
 	
 	[self fadeSoundOut:identifier];
 }
 
 - (void) stopSoundNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	NSString *identifier = [userInfo objectForKey:kNotificationSoundIdentifier];
+	NSString *identifier = userInfo[kNotificationSoundIdentifier];
 	
 	[self stopSound:identifier];
 }
 
 - (void) querySoundNotification:(NSNotification*)notificationObject {
 	NSDictionary *userInfo = [notificationObject userInfo];
-	NSString *identifier = [userInfo objectForKey:kNotificationSoundIdentifier];
+	NSString *identifier = userInfo[kNotificationSoundIdentifier];
 
 	BOOL soundPlaying = [self soundPlaying:identifier];
 	
-	NSDictionary *soundInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							   identifier, kNotificationSoundIdentifier,
-							   [NSNumber numberWithBool:soundPlaying], kNotificationSoundPlaying,
-							   nil];
+	NSDictionary *soundInfo = @{kNotificationSoundIdentifier: identifier,
+							   kNotificationSoundPlaying: @(soundPlaying)};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kQueryResponseSoundNotification object:self userInfo:soundInfo];
 	
 }
