@@ -105,7 +105,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>", [self class], self, _name, _width, _height, _maxS, _maxT];
+	return [NSString stringWithFormat:@"<%@ = %8@ | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>", [self class], self, _name, _width, _height, _maxS, _maxT];
 }
 
 @end
@@ -270,7 +270,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	CGContextTranslateCTM(context, 0.0, height);
 	CGContextScaleCTM(context, 1.0, -1.0); //NOTE: NSString draws in UIKit referential i.e. renders upside-down compared to CGBitmapContext referential
 	UIGraphicsPushContext(context);
-		[string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:UILineBreakModeWordWrap alignment:alignment];
+		[string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:NSLineBreakByWordWrapping];
 	UIGraphicsPopContext();
 	
 	self = [self initWithData:data pixelFormat:kTexture2DPixelFormat_A8 pixelsWide:width pixelsHigh:height contentSize:dimensions];

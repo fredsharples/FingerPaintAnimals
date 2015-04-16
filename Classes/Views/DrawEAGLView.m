@@ -122,7 +122,7 @@
 	CGContextSetBlendMode(context, kCGBlendModeCopy);
 	CGContextDrawImage(context, CGRectMake(0,0,width,height), paperImageRef);
 	CGContextRelease(context);
-	CGImageRelease(paperImageRef);
+	//F# CGImageRelease(paperImageRef);
 	
 	int byteIndex = 0;
 	unsigned int r, g, b, a, rgbInt;
@@ -147,12 +147,13 @@
 	 
 //	CGDataProviderRef ref = CGDataProviderCreateWithData(NULL, rawData, myDataLength, releaseDataCallback);
 	CGDataProviderRef ref = CGDataProviderCreateWithData(rawData, rawData, myDataLength, releaseDataCallback);
-	CGImageRef iref = CGImageCreate(width,height,bitsPerComponent,32,bytesPerRow,CGColorSpaceCreateDeviceRGB(),kCGBitmapByteOrderDefault | kCGImageAlphaLast,ref,NULL,true,kCGRenderingIntentDefault);
+	
+    CGImageRef iref = CGImageCreate(width,height,bitsPerComponent,32,bytesPerRow,CGColorSpaceCreateDeviceRGB(),kCGBitmapByteOrderDefault | kCGImageAlphaLast,ref,NULL,true,kCGRenderingIntentDefault);
 	
 	UIImage *image = [[UIImage alloc] initWithCGImage:iref];
 	
 	CGDataProviderRelease(ref);
-	CGImageRelease(iref);	
+	CGImageRelease(iref);
 	
 	_paperView = [[UIImageView alloc] initWithFrame:self.bounds];
 	_paperView.backgroundColor = [UIColor clearColor];
@@ -349,11 +350,11 @@
 //	if (_iPhoneDevice) {
 //		paperFileName = [NSString stringWithFormat:@"%@.png", kImage_Paper];
 //	} else {
-		paperFileName = [NSString stringWithFormat:@"%@_iPad.png", kImage_Paper];
+		//F# paperFileName = [NSString stringWithFormat:@"%@_iPad.png", kImage_Paper];
 //	}
-	UIImage *image = [UIImage imageNamed:paperFileName];
+	//UIImage *image = [UIImage imageNamed:paperFileName];
 	
-	_previousDrawnImage.image = image;
+	//_previousDrawnImage.image = image;
 	_previousDrawnImage.hidden = NO;
 }
 

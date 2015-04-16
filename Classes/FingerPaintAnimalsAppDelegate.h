@@ -50,7 +50,7 @@
 
 - (void) changeState:(unsigned)state;
 
-@property (nonatomic, retain) IBOutlet GameWindow *window;
+//@property (nonatomic, retain) IBOutlet GameWindow *window;
 @property (nonatomic, retain) OpenALPlayer *_openALPlayer;
 
 @end

@@ -14,7 +14,7 @@
 
 @implementation FingerPaintAnimalsAppDelegate
 
-@synthesize window;
+//@synthesize window;
 
 #pragma mark -
 #pragma mark Life Cycle

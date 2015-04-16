@@ -186,6 +186,7 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewDidUnload];
 }
 
 
@@ -463,7 +464,7 @@
 
 - (void) playSoundIdentifier {
 	if ([_type length] == 0) {
-		[_soundIdentifier setString:[NSString stringWithString:kBlankPageAudio]];
+		[_soundIdentifier setString:kBlankPageAudio];
 	} else {
 		[_soundIdentifier setString:[NSString stringWithFormat:@"VO_%@", _type]];	
 	}
@@ -573,7 +574,7 @@
 								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo0];
 		
-		[_soundIdentifier setString:[NSString stringWithString:kCameraAudio]];
+		[_soundIdentifier setString:kCameraAudio];
 
 		NSDictionary *soundInfo1 = @{kNotificationSoundIdentifier: _soundIdentifier,
 								   kNotificationSoundRestart: @YES};
@@ -637,7 +638,7 @@
 								   kNotificationSoundVolume: [NSNumber numberWithFloat:kClickVolume]};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kPlaySoundNotification object:self userInfo:soundInfo0];
 		
-		[_soundIdentifier setString:[NSString stringWithString:kTrashAudio]];
+		[_soundIdentifier setString:kTrashAudio];
 
 		NSDictionary *soundInfo1 = @{kNotificationSoundIdentifier: _soundIdentifier,
 								   kNotificationSoundRestart: @YES};

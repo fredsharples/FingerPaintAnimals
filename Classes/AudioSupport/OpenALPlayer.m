@@ -79,7 +79,7 @@
 
 #pragma mark Object Init / Maintenance
 void interruptionListener(void *inClientData, UInt32 inInterruptionState) {
-	OpenALPlayer* THIS = (OpenALPlayer*)inClientData;
+	OpenALPlayer* THIS = (__bridge OpenALPlayer*)inClientData;
 	if (inInterruptionState == kAudioSessionBeginInterruption) {
 		//[THIS teardownOpenAL];	
 		[THIS stopAllSoundsExcept:@""];
@@ -89,7 +89,7 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState) {
 		}
 	} else if (inInterruptionState == kAudioSessionEndInterruption) {
 		OSStatus result = AudioSessionSetActive(true);
-		if (result) NSLog(@"Error setting audio session active! %d\n", result);
+		if (result) NSLog(@"Error setting audio session active! %d\n", (int)result);
 		alcMakeContextCurrent(THIS->_context);
 		//[THIS initOpenAL];
 		if (THIS._interrupted) {
@@ -126,14 +126,14 @@ void RouteChangeListener(void *inClientData, AudioSessionPropertyID inID,
 		// setup our audio session
 		OSStatus result = AudioSessionInitialize(NULL, NULL, interruptionListener, self);
 		if (result) {
-			NSLog(@"Error initializing audio session! %d\n", result);
+			NSLog(@"Error initializing audio session! %d\n", (int)result);
 		} else {
 			UInt32 category = kAudioSessionCategory_AmbientSound;
 			result = AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(category), &category);
-			if (result) NSLog(@"Error setting audio session category! %d\n", result);
+			if (result) NSLog(@"Error setting audio session category! %d\n", (int)result);
 			
 			result = AudioSessionSetActive(true);
-			if (result) NSLog(@"Error setting audio session active! %d\n", result);
+			if (result) NSLog(@"Error setting audio session active! %d\n", (int)result);
 		}
 		
 		_interrupted = NO;
